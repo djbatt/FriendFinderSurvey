@@ -12,8 +12,8 @@ app.use(express.static(path.join(__dirname, "./app/public")))
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-require("./app/routing/apiRoutes.js");
-require("./app/routing/htmlRoutes.js");
+require(path.join(__dirname, "./app/routing/htmlRoutes.js"))(app);
+require(path.join(__dirname, "./app/routing/apiRoutes.js"))(app);
 
 app.listen(port, function() {
     console.log(`App listening on port: ${port}`);
