@@ -6,6 +6,10 @@
     <link rel="shortcut icon" href="Assets/Images/favicon.png" type="image/x-icon">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
+    <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../public/css/style.css">
     <title>Survey</title>
 </head>
@@ -139,8 +143,53 @@
             </column>
         </row>
         <br>
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <h3>Your Closest Match</h3>
+                <hr>
+                <h4 id="matchedUser"></h4>
+                <img id="matchedImg" style="max-width: 400px" style="max-height: 400px">
+            </div>
+        </div>
     </div>
-    
+
+    <script type="text/javascript">
+    $.document.ready(function() {
+
+        $("#modal").modal({
+            dismissable: false
+        })
+        
+        $("#Submit").on("click", function(event) {
+            event.preventDefault();
+
+            var input = {
+                name: $("#inputName").val().trim(),
+                photo: $("#inputImg").val().trim(),
+                scores: [
+                    $("#inputOne").val().trim(),
+                    $("#inputTwo").val().trim(),
+                    $("#inputThree").val().trim(),
+                    $("#inputFour").val().trim(),
+                    $("#inputFive").val().trim(),
+                    $("#inputSix").val().trim(),
+                    $("#inputSeven").val().trim(),
+                    $("#inputEight").val().trim(),
+                    $("#inputNine").val().trim(),
+                    $("#inputTen").val().trim()
+                ]
+            }
+
+            $.post("/friends", input)
+            .done(function(data) {
+                $("#matchedUser").html(data.matchName);
+                $("#matchedImg").html(data.matchImg);
+
+                $("#modal").modal("open");
+            })
+        });
+    })
+    </script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
